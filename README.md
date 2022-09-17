@@ -30,7 +30,9 @@ MapPoint(3rdPose)
 Outlier(T,F)
 
 InImage(T,F)
+
     ↕
+    
 4.MapPoint<One>
 
 Id
