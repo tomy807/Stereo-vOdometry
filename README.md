@@ -8,18 +8,18 @@ common_include.h -> 1.camera.h -> frame.h ---|-------------|
                     5.g2o_types.h    |----------->viewer.h-------------------|
 ~~~
 
-1.Camera
+# 1.Camera
 
 fx,fy,cx,cy,pose
 
-2.Config
+# 2.Config
 
 File->dataset_dir,fx,fy,cx,cy,num_features,num_features_init,
 num_features_tracking
 
 
 
-3.Feature<Many>
+# 3.Feature<Many>
 
 Frame
 
@@ -32,8 +32,8 @@ Outlier(T,F)
 InImage(T,F)
 
     ↕
-    
-4.MapPoint<One>
+
+# 4.MapPoint<One>
 
 Id
 
@@ -47,7 +47,7 @@ vector<Feature>
 
 
 
-5.Frame
+# 5.Frame
 
 Id
 
@@ -66,7 +66,7 @@ vector<LeftFeature>
 vector<RightFeature>
 
 
-6.Dataset
+# 6.Dataset
 
 Dataset_path
 
@@ -75,7 +75,7 @@ vector<Camera>(4)
 Get_NextFrame
 
 
-7.Map
+# 7.Map
 
 Landmarks(map<MapPoint>)
 
@@ -84,7 +84,7 @@ KeyFrames(map<Frames>)
 Num_Active_Keyframes_(show 7 boxes)
 
 
-8.Frontend
+# 8.Frontend
 
 CurrentFrame
 
@@ -104,7 +104,7 @@ Backend
 
 Viewer
 
-9.Visual_Odometry
+# 9.Visual_Odometry
 
 Frontend
 
