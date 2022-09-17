@@ -11,7 +11,7 @@ namespace myslam{
             static std::shared_ptr<Config> config_;
             cv::FileStorage file_;
 
-            Config() {}  // private constructor makes a singleton
+            Config() {}  // Singleton
         public:
             ~Config();
 
