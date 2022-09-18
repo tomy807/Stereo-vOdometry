@@ -1,5 +1,6 @@
 add_library(myslam SHARED
         config.cpp
+        camera.cpp
         )
 find_package( Sophus REQUIRED )
 include_directories("/usr/local/include/sophus")
