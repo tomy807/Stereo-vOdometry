@@ -17,8 +17,6 @@ fx,fy,cx,cy,pose
 File->dataset_dir,fx,fy,cx,cy,num_features,num_features_init,
 num_features_tracking
 
-
-
 # 3.Feature<Many>
 
 Frame
@@ -45,8 +43,6 @@ ObservedTime
 
 vector<Feature>
 
-
-
 # 5.Frame
 
 Id
@@ -65,7 +61,6 @@ vector<LeftFeature>
 
 vector<RightFeature>
 
-
 # 6.Dataset
 
 Dataset_path
@@ -74,7 +69,6 @@ vector<Camera>(4)
 
 Get_NextFrame
 
-
 # 7.Map
 
 Landmarks(map<MapPoint>)
@@ -82,7 +76,6 @@ Landmarks(map<MapPoint>)
 KeyFrames(map<Frames>)
 
 Num_Active_Keyframes_(show 7 boxes)
-
 
 # 8.Frontend
 
@@ -99,7 +92,6 @@ Tracking_inliers
 
 Target=RelativeMotion(Last,Current)
 
-
 Backend
 
 Viewer
@@ -115,7 +107,6 @@ Map
 Viewer
 
 Dataset
-
 
 VisualOdometry->Config->Dataset
 
