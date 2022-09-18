@@ -1,4 +1,4 @@
-SET(TEST_SOURCES ConfigTest CameraTest FrameTest)
+SET(TEST_SOURCES ConfigTest CameraTest FrameTest FeatureTest)
 
 FOREACH (test_src ${TEST_SOURCES})
     ADD_EXECUTABLE(${test_src} ${test_src}.cpp)

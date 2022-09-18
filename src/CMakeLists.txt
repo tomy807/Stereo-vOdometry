@@ -3,6 +3,7 @@ add_library(myslam SHARED
         camera.cpp
         dataset.cpp
         frame.cpp
+        feature.cpp
         )
 find_package( Sophus REQUIRED )
 include_directories("/usr/local/include/sophus")
