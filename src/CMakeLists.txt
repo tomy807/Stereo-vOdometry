@@ -4,6 +4,8 @@ add_library(myslam SHARED
         dataset.cpp
         frame.cpp
         feature.cpp
+        map.cpp
+        mappoint.cpp
         )
 find_package( Sophus REQUIRED )
 include_directories("/usr/local/include/sophus")

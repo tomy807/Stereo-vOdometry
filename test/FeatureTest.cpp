@@ -116,9 +116,6 @@ TEST(FEATURE,Detech_LeftImg_Features){
 
 }
 
-
-
-
 TEST(FEATURE,Detech_RightImg_Features){
     std::string config_file = "/home/tomy807/streoSlam/config/default.yaml";
     Config::SetParameterFile(config_file);
@@ -199,7 +196,9 @@ TEST(FEATURE,Triangular){
     
     cout << new_frame->features_right_.size() << endl;
     cout << new_frame->features_left_.size() << endl;
-
+    for(auto i: points){
+        cout << i << endl;
+    }
     Vec3 pworld = Vec3::Zero();
 
     triangulation(poses, points, pworld);

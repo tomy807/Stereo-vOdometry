@@ -16,14 +16,22 @@ namespace myslam {
 inline bool triangulation(const std::vector<SE3> &poses,
                    const std::vector<Vec3> points, Vec3 &pt_world) {
     MatXX A(2 * poses.size(), 4);
+    // std::cout << A <<std::endl;
+    // std::cout << poses.size() << std::endl;
     VecX b(2 * poses.size());
     b.setZero();
     for (size_t i = 0; i < poses.size(); ++i) {
         Mat34 m = poses[i].matrix3x4();
         A.block<1, 4>(2 * i, 0) = points[i][0] * m.row(2) - m.row(0);
         A.block<1, 4>(2 * i + 1, 0) = points[i][1] * m.row(2) - m.row(1);
+        // std::cout << i << "loop" << std::endl;
+        // std::cout << A <<std::endl;
     }
+    // std::cout << "out loop" << std::endl;
+    // std::cout << A <<std::endl;
     auto svd = A.bdcSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
+    // std::cout << svd.matrixU() << std::endl;
+    // std::cout << svd.matrixV() << std::endl;
     pt_world = (svd.matrixV().col(3) / svd.matrixV()(3, 3)).head<3>();
 
     if (svd.singularValues()[3] / svd.singularValues()[2] < 1e-2) {
