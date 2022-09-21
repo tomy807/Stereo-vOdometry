@@ -7,7 +7,7 @@
 #include "myslam/frontend.h"
 #include "myslam/g2o_types.h"
 #include "myslam/map.h"
-#include "myslam/viewer.h"
+// #include "myslam/viewer.h"
 
 namespace myslam {
 
@@ -20,30 +20,28 @@ Frontend::Frontend() {
 
 bool Frontend::AddFrame(myslam::Frame::Ptr frame) {
     current_frame_ = frame;
-
     switch (status_) {
         case FrontendStatus::INITING:
+            std::cout << "Frame: " << current_frame_->id_ << "-------------------" << std::endl;
             StereoInit();
             break;
         case FrontendStatus::TRACKING_GOOD:
         case FrontendStatus::TRACKING_BAD:
+            std::cout << "Frame: " << current_frame_->id_ << "-------------------" << std::endl;
             Track();
             break;
         case FrontendStatus::LOST:
             Reset();
             break;
     }
-
+    std::cout << "AllMapPoints: " << map_.get()->GetAllMapPoints().size() << std::endl;
     last_frame_ = current_frame_;
     return true;
 }
 
 bool Frontend::Track() {
     if (last_frame_) {
-        // std::cout << relative_motion_.matrix() << std::endl;
-        // std::cout << last_frame_->Pose().matrix() << std::endl;
         current_frame_->SetPose(relative_motion_ * last_frame_->Pose());
-        // std::cout << current_frame_->Pose().matrix() << std::endl;
     }
 
     int num_track_last = TrackLastFrame();
@@ -64,7 +62,7 @@ bool Frontend::Track() {
     InsertKeyframe();
     relative_motion_ = current_frame_->Pose() * last_frame_->Pose().inverse();
 
-    if (viewer_) viewer_->AddCurrentFrame(current_frame_);
+    // if (viewer_) viewer_->AddCurrentFrame(current_frame_);
     return true;
 }
 
@@ -82,7 +80,7 @@ bool Frontend::InsertKeyframe() {
 
     SetObservationsForKeyFrame();
     DetectFeatures();  // detect new features
-
+    std::cout << current_frame_->features_left_.size() <<std::endl;
     // track in right image
     FindFeaturesInRight();
     // triangulate map points
@@ -90,7 +88,7 @@ bool Frontend::InsertKeyframe() {
     // update backend because we have a new keyframe
     // backend_->UpdateMap();
 
-    if (viewer_) viewer_->UpdateMap();
+    // if (viewer_) viewer_->UpdateMap();
 
     return true;
 }
@@ -230,6 +228,9 @@ int Frontend::EstimateCurrentPose() {
 int Frontend::TrackLastFrame() {
     // use LK flow to estimate points in the right image
     std::vector<cv::Point2f> kps_last, kps_current;
+
+    std::cout << "Last Frame FeaturesLeft: " <<last_frame_->features_left_.size() << std::endl; 
+
     for (auto &kp : last_frame_->features_left_) {
         if (kp->map_point_.lock()) {
             // use project point
@@ -243,7 +244,7 @@ int Frontend::TrackLastFrame() {
             kps_current.push_back(kp->position_.pt);
         }
     }
-
+    
     std::vector<uchar> status;
     Mat error;
     cv::calcOpticalFlowPyrLK(
@@ -279,10 +280,10 @@ bool Frontend::StereoInit() {
     bool build_map_success = BuildInitMap();
     if (build_map_success) {
         status_ = FrontendStatus::TRACKING_GOOD;
-        if (viewer_) {
-            viewer_->AddCurrentFrame(current_frame_);
-            viewer_->UpdateMap();
-        }
+        // if (viewer_) {
+        //     viewer_->AddCurrentFrame(current_frame_);
+        //     viewer_->UpdateMap();
+        // }
         return true;
     }
     return false;
@@ -305,7 +306,7 @@ int Frontend::DetectFeatures() {
         cnt_detected++;
     }
 
-    LOG(INFO) << "Detect " << cnt_detected << " new features";
+    LOG(INFO) << "Detect " << cnt_detected << " Left Image new features";
     return cnt_detected;
 }
 
@@ -317,8 +318,7 @@ int Frontend::FindFeaturesInRight() {
         auto mp = kp->map_point_.lock();
         if (mp) {
             // use projected points as initial guess
-            auto px =
-                camera_right_->world2pixel(mp->pos_, current_frame_->Pose());
+            auto px = camera_right_->world2pixel(mp->pos_, current_frame_->Pose());
             kps_right.push_back(cv::Point2f(px[0], px[1]));
         } else {
             // use same pixel in left iamge
@@ -334,7 +334,6 @@ int Frontend::FindFeaturesInRight() {
         cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS, 30,
                          0.01),
         cv::OPTFLOW_USE_INITIAL_FLOW);
-
     int num_good_pts = 0;
     for (size_t i = 0; i < status.size(); ++i) {
         if (status[i]) {

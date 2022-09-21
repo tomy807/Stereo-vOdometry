@@ -6,6 +6,7 @@ add_library(myslam SHARED
         feature.cpp
         map.cpp
         mappoint.cpp
+        frontend.cpp
         )
 find_package( Sophus REQUIRED )
 include_directories("/usr/local/include/sophus")

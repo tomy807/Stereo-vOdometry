@@ -11,4 +11,5 @@
 #include "myslam/algorithm.h"
 #include "myslam/camera.h"
 #include "myslam/g2o_types.h"
+#include "myslam/frontend.h"
 #endif
