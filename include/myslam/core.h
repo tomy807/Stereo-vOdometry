@@ -12,4 +12,5 @@
 #include "myslam/camera.h"
 #include "myslam/g2o_types.h"
 #include "myslam/frontend.h"
+#include "myslam/viewer.h"
 #endif
